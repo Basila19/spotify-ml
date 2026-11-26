@@ -27,7 +27,7 @@ X_train, X_test, y_train, y_test = train_test_split(
     X, y, test_size=0.2, random_state=42, stratify=y
 )
 
-# Tuned Gradient Boosting model
+# Gradient boosting model with fixed hyperparameters
 hit_model = HistGradientBoostingClassifier(
     max_iter=200,
     learning_rate=0.08,

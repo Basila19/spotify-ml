@@ -97,7 +97,7 @@ explicit = st.sidebar.checkbox("Explicit Lyrics", value=False)
 
 # --- HEADER & TABS ---
 st.title("🎧 Spotify Hit & Mood Engine")
-st.caption("Hit = popularity ≥ 70. Classifier: Tuned Boosting (decision threshold 0.50).")
+st.caption("Hit = popularity ≥ 70. Classifier: Boosting with fixed settings (decision threshold 0.50).")
 
 tab1, tab2, tab3 = st.tabs(["Predict a song", "Model results", "Discover songs"])
 
@@ -166,20 +166,16 @@ with tab1:
 # TAB 2: MODEL RESULTS
 # ==========================================
 with tab2:
-    st.subheader("Model Performance Comparison")
-    st.write("Comparison of classifiers trained on 113,549 Spotify tracks:")
+    st.subheader("Models and syllabus concepts")
+    st.write(f"Models are evaluated using a held-out test split from {len(catalog_df):,} cleaned Spotify tracks.")
 
-    results_df = pd.DataFrame({
-        "Model": ["Logistic Regression (Baseline)", "K-Nearest Neighbors (KNN)", "HistGradientBoosting (Tuned)"],
-        "Role": ["Linear Baseline", "Distance-Based Classifier", "Final Production Model"],
-        "Accuracy (%)": [71.4, 93.8, 75.0],
-        "Notes": [
-            "Balanced class weights; high recall for hits",
-            "Sensitive to local feature density",
-            "Best probability calibration & fast inference"
-        ]
+    models_df = pd.DataFrame({
+        "Model": ["Logistic Regression", "K-Nearest Neighbors (KNN)", "HistGradientBoosting"],
+        "Syllabus concept": ["Supervised learning: logistic regression", "Supervised learning: K-nearest neighbors", "Ensemble methods: boosting"],
+        "Training script": ["03_logistic_regression.py", "04_knn_model.py", "06_boosting_model.py"]
     })
-    st.dataframe(results_df, use_container_width=True, hide_index=True)
+    st.dataframe(models_df, use_container_width=True, hide_index=True)
+    st.caption("Run each training script to calculate its current test accuracy and classification report (precision, recall, and F1).")
 
     st.subheader("Mood Clustering Summary (PCA + K-Means, k=4)")
     cluster_profile = catalog_df.groupby("Mood")[mood_features].mean().round(2).reset_index()
